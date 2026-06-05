@@ -1,27 +1,20 @@
 import { Link } from "react-router-dom";
 
-const svg =
-  (d, extra = "") =>
-  ({ size = 18 }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {extra && <path d={extra} />}
-      <path d={d} />
-    </svg>
-  );
-
-// Social icons
-const FacebookIcon = svg(
-  "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z",
+// ─── Social icons ─────────────────────────────────────────────────────────────
+const FacebookIcon = ({ size = 18 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
 );
 const InstagramIcon = ({ size = 18 }) => (
   <svg
@@ -68,7 +61,7 @@ const YoutubeIcon = ({ size = 18 }) => (
   </svg>
 );
 
-// Trust-bar icons
+// ─── Trust icons ──────────────────────────────────────────────────────────────
 const TruckIcon = ({ size = 22 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +113,7 @@ const ShieldIcon = ({ size = 22 }) => (
   </svg>
 );
 
-// App store icons
+// ─── App store icons ──────────────────────────────────────────────────────────
 const AppleIcon = ({ size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -144,6 +137,7 @@ const PlayStoreIcon = ({ size = 20 }) => (
   </svg>
 );
 
+// ─── Data ─────────────────────────────────────────────────────────────────────
 const footerLinks = {
   Shop: [
     { label: "Mobiles", to: "/category/mobiles" },
@@ -160,10 +154,10 @@ const footerLinks = {
     { label: "Help Center", to: "/help" },
   ],
   Company: [
-    { label: "About Noon", to: "/about" },
+    { label: "About Nexota", to: "/about" },
     { label: "Careers", to: "/careers" },
     { label: "Press", to: "/press" },
-    { label: "Sell on Noon", to: "/sell" },
+    { label: "Sell on Nexota", to: "/sell" },
   ],
 };
 
@@ -174,72 +168,77 @@ const socials = [
   { icon: <YoutubeIcon size={16} />, label: "YouTube", href: "#" },
 ];
 
+// ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
   return (
-    <footer className="mt-24 bg-[#111] text-white">
-      {/* Top band */}
+    <footer className="mt-24 bg-[#0D1B3E] text-white">
+      {/* Trust band */}
       <div className="border-b border-white/10">
-        <div className="max-w-[1600px] mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <span className="text-[#F59E0B]">
-              <TruckIcon />
-            </span>
-            <span className="text-sm text-gray-300 font-medium">
-              Free delivery on orders over{" "}
-              <span className="text-[#F59E0B] font-bold">AED 100</span>
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-[#F59E0B]">
-              <RefreshIcon />
-            </span>
-            <span className="text-sm text-gray-300 font-medium">
-              Easy <span className="text-[#F59E0B] font-bold">15-day</span>{" "}
-              returns
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-[#F59E0B]">
-              <ShieldIcon />
-            </span>
-            <span className="text-sm text-gray-300 font-medium">
-              <span className="text-[#F59E0B] font-bold">100% secure</span>{" "}
-              payments
-            </span>
-          </div>
+        <div className="max-w-[1600px] mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
+          {[
+            {
+              icon: <TruckIcon />,
+              text: (
+                <>
+                  Free delivery on orders over{" "}
+                  <span className="text-[#015df0] font-bold">QAR 200</span>
+                </>
+              ),
+            },
+            {
+              icon: <RefreshIcon />,
+              text: (
+                <>
+                  Easy <span className="text-[#015df0] font-bold">15-day</span>{" "}
+                  returns
+                </>
+              ),
+            },
+            {
+              icon: <ShieldIcon />,
+              text: (
+                <>
+                  <span className="text-[#015df0] font-bold">100% secure</span>{" "}
+                  payments
+                </>
+              ),
+            },
+          ].map(({ icon, text }, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-center sm:justify-start gap-3"
+            >
+              <span className="text-[#015df0] shrink-0">{icon}</span>
+              <span className="text-sm text-gray-300 font-medium">{text}</span>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Main grid */}
       <div className="max-w-[1600px] mx-auto px-6 py-14">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-2 flex flex-col gap-5">
+          {/* Brand column */}
+          <div className="col-span-2 flex flex-col gap-5">
             <img
               src="/logo.png"
-              alt="noon"
+              alt="Nexota"
               className="h-12 w-auto object-contain"
             />
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Your favourite online shopping destination. Millions of products,
-              delivered fast across the region.
+              Qatar's favourite online electronics destination. Millions of
+              products, delivered fast across Doha and beyond.
             </p>
 
-            {/* Social icons */}
-            <div className="flex gap-3 mt-2">
+            {/* Socials */}
+            <div className="flex gap-3 mt-1">
               {socials.map(({ icon, label, href }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="
-                    w-9 h-9 rounded-full
-                    border border-white/15
-                    flex items-center justify-center
-                    text-gray-400
-                    hover:border-[#F59E0B] hover:text-[#F59E0B]
-                    transition-all duration-200
-                  "
+                  className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center
+                    text-gray-400 hover:border-[#015df0] hover:text-[#015df0] transition-all duration-200"
                 >
                   {icon}
                 </a>
@@ -247,29 +246,35 @@ function Footer() {
             </div>
 
             {/* App badges */}
-            <div className="flex gap-3 mt-1">
-              <div className="px-3 py-2 rounded-lg border border-white/15 flex items-center gap-2 cursor-pointer hover:border-white/30 transition-colors">
-                <AppleIcon />
-                <div>
-                  <p className="text-[10px] text-gray-500 leading-none">
-                    Download on the
-                  </p>
-                  <p className="text-xs font-semibold leading-none mt-0.5">
-                    App Store
-                  </p>
+            <div className="flex gap-3 flex-wrap">
+              {[
+                {
+                  icon: <AppleIcon />,
+                  sub: "Download on the",
+                  label: "App Store",
+                },
+                {
+                  icon: <PlayStoreIcon />,
+                  sub: "Get it on",
+                  label: "Google Play",
+                },
+              ].map(({ icon, sub, label }) => (
+                <div
+                  key={label}
+                  className="px-3 py-2 rounded-lg border border-white/15 flex items-center gap-2
+                    cursor-pointer hover:border-[#015df0] transition-colors"
+                >
+                  {icon}
+                  <div>
+                    <p className="text-[10px] text-gray-500 leading-none">
+                      {sub}
+                    </p>
+                    <p className="text-xs font-semibold leading-none mt-0.5">
+                      {label}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="px-3 py-2 rounded-lg border border-white/15 flex items-center gap-2 cursor-pointer hover:border-white/30 transition-colors">
-                <PlayStoreIcon />
-                <div>
-                  <p className="text-[10px] text-gray-500 leading-none">
-                    Get it on
-                  </p>
-                  <p className="text-xs font-semibold leading-none mt-0.5">
-                    Google Play
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
@@ -284,7 +289,7 @@ function Footer() {
                   <li key={label}>
                     <Link
                       to={to}
-                      className="text-sm text-gray-400 hover:text-[#F59E0B] transition-colors duration-150"
+                      className="text-sm text-gray-400 hover:text-white transition-colors duration-150"
                     >
                       {label}
                     </Link>
@@ -298,9 +303,9 @@ function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-white/10">
-        <div className="max-w-[1600px] mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-600">
-          <p>© 2026 Noon Clone. All Rights Reserved.</p>
-          <div className="flex gap-5">
+        <div className="max-w-[1600px] mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-600">
+          <p>© 2026 Nexota Store. All Rights Reserved.</p>
+          <div className="flex gap-5 flex-wrap justify-center">
             <Link
               to="/privacy"
               className="hover:text-gray-400 transition-colors"
