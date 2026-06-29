@@ -21,7 +21,7 @@ import useAuthStore from "../../store/useAuthStore";
 import useCartStore from "../../store/useCartStore";
 import useWishlistStore from "../../store/useWishlistStore";
 import api from "../../services/api";
-import Navbar from "./Navbar";
+import Navbar from "./NavBar";
 import AppSearchBar from "../ui/AppSearchBar";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
