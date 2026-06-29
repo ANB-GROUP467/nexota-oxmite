@@ -296,37 +296,7 @@ function Home() {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             className="mt-10 sm:mt-12"
-          >
-            <div className="flex flex-col items-center gap-4 rounded-2xl border border-[#E8E8F0] bg-white px-6 py-10 text-center sm:rounded-3xl sm:py-12">
-              <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#015DF0]">
-                <span className="inline-block h-px w-5 bg-[#FEEE00]" />
-                Stay in the loop
-                <span className="inline-block h-px w-5 bg-[#FEEE00]" />
-              </span>
-              <h3 className="max-w-sm text-xl font-black text-[#0D1B3E] sm:text-2xl">
-                Get notified about flash sales and new arrivals
-              </h3>
-              <p className="max-w-xs text-sm font-medium text-slate-500">
-                No spam — just the deals worth knowing about.
-              </p>
-              <form
-                onSubmit={(e) => e.preventDefault()}
-                className="mt-2 flex w-full max-w-sm flex-col gap-2.5 sm:flex-row"
-              >
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="h-11 w-full flex-1 rounded-xl border border-[#E8E8F0] bg-[#F7F7FA] px-4 text-sm font-medium text-[#0D1B3E] placeholder-slate-400 outline-none ring-0 transition focus:border-[#015DF0] focus:ring-2 focus:ring-[#015DF0]/15"
-                />
-                <button
-                  type="submit"
-                  className="h-11 shrink-0 rounded-xl bg-[#0D1B3E] px-5 text-sm font-black text-white transition hover:bg-[#1A2B52] active:scale-[0.97]"
-                >
-                  Notify me
-                </button>
-              </form>
-            </div>
-          </motion.section>
+          ></motion.section>
         </div>
       </main>
     </MainLayout>
