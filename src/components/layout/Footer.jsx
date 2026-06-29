@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-// ─── Social icons ─────────────────────────────────────────────────────────────
 const FacebookIcon = ({ size = 18 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -60,8 +59,6 @@ const YoutubeIcon = ({ size = 18 }) => (
     <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" />
   </svg>
 );
-
-// ─── Trust icons ──────────────────────────────────────────────────────────────
 const TruckIcon = ({ size = 22 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -112,8 +109,6 @@ const ShieldIcon = ({ size = 22 }) => (
     <path d="m9 12 2 2 4-4" />
   </svg>
 );
-
-// ─── App store icons ──────────────────────────────────────────────────────────
 const AppleIcon = ({ size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -137,7 +132,6 @@ const PlayStoreIcon = ({ size = 20 }) => (
   </svg>
 );
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
 const footerLinks = {
   Shop: [
     { label: "Mobiles", to: "/category/mobiles" },
@@ -168,62 +162,58 @@ const socials = [
   { icon: <YoutubeIcon size={16} />, label: "YouTube", href: "#" },
 ];
 
-// ─── Footer ───────────────────────────────────────────────────────────────────
+const trustItems = [
+  {
+    icon: <TruckIcon />,
+    title: "Free Delivery",
+    text: "On orders over QAR 200",
+  },
+  {
+    icon: <RefreshIcon />,
+    title: "Easy Returns",
+    text: "15-day hassle-free returns",
+  },
+  {
+    icon: <ShieldIcon />,
+    title: "Secure Payments",
+    text: "100% safe & encrypted",
+  },
+];
+
 function Footer() {
   return (
-    <footer className="mt-24 bg-[#0D1B3E] text-white">
-      {/* Trust band */}
+    <footer className="mt-16 sm:mt-24 bg-[#0D1B3E] text-white">
+      {/* ── Trust band ── */}
       <div className="border-b border-white/10">
-        <div className="max-w-[1600px] mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
-          {[
-            {
-              icon: <TruckIcon />,
-              text: (
-                <>
-                  Free delivery on orders over{" "}
-                  <span className="text-[#015df0] font-bold">QAR 200</span>
-                </>
-              ),
-            },
-            {
-              icon: <RefreshIcon />,
-              text: (
-                <>
-                  Easy <span className="text-[#015df0] font-bold">15-day</span>{" "}
-                  returns
-                </>
-              ),
-            },
-            {
-              icon: <ShieldIcon />,
-              text: (
-                <>
-                  <span className="text-[#015df0] font-bold">100% secure</span>{" "}
-                  payments
-                </>
-              ),
-            },
-          ].map(({ icon, text }, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-center sm:justify-start gap-3"
-            >
-              <span className="text-[#015df0] shrink-0">{icon}</span>
-              <span className="text-sm text-gray-300 font-medium">{text}</span>
-            </div>
-          ))}
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+            {trustItems.map(({ icon, title, text }) => (
+              <div
+                key={title}
+                className="flex items-center gap-4 py-4 sm:py-0 sm:px-8 first:pt-0 last:pb-0 sm:first:pl-0 sm:last:pr-0"
+              >
+                <span className="shrink-0 p-2.5 rounded-xl bg-[#015df0]/15 text-[#015df0]">
+                  {icon}
+                </span>
+                <div>
+                  <p className="text-sm font-bold text-white">{title}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Main grid */}
-      <div className="max-w-[1600px] mx-auto px-6 py-14">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
+      {/* ── Main grid ── */}
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-10 sm:py-14">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-8 sm:gap-10">
           {/* Brand column */}
           <div className="col-span-2 flex flex-col gap-5">
             <img
               src="/logo.png"
               alt="Nexota"
-              className="h-12 w-auto object-contain"
+              className="h-10 sm:h-12 w-auto object-contain object-left"
             />
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
               Qatar's favourite online electronics destination. Millions of
@@ -231,14 +221,14 @@ function Footer() {
             </p>
 
             {/* Socials */}
-            <div className="flex gap-3 mt-1">
+            <div className="flex gap-2.5 flex-wrap">
               {socials.map(({ icon, label, href }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
                   className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center
-                    text-gray-400 hover:border-[#015df0] hover:text-[#015df0] transition-all duration-200"
+                    text-gray-400 hover:border-[#015df0] hover:text-[#015df0] hover:bg-[#015df0]/10 transition-all duration-200"
                 >
                   {icon}
                 </a>
@@ -246,7 +236,7 @@ function Footer() {
             </div>
 
             {/* App badges */}
-            <div className="flex gap-3 flex-wrap">
+            <div className="flex gap-2.5 flex-wrap">
               {[
                 {
                   icon: <AppleIcon />,
@@ -259,32 +249,32 @@ function Footer() {
                   label: "Google Play",
                 },
               ].map(({ icon, sub, label }) => (
-                <div
+                <button
                   key={label}
-                  className="px-3 py-2 rounded-lg border border-white/15 flex items-center gap-2
-                    cursor-pointer hover:border-[#015df0] transition-colors"
+                  className="px-3 py-2 rounded-xl border border-white/15 flex items-center gap-2.5
+                    hover:border-[#015df0] hover:bg-[#015df0]/10 transition-all duration-200 text-left"
                 >
-                  {icon}
+                  <span className="text-white">{icon}</span>
                   <div>
                     <p className="text-[10px] text-gray-500 leading-none">
                       {sub}
                     </p>
-                    <p className="text-xs font-semibold leading-none mt-0.5">
+                    <p className="text-xs font-semibold leading-none mt-0.5 text-white">
                       {label}
                     </p>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
 
-          {/* Link columns */}
+          {/* Link columns — on mobile show 1 col each within 2-col grid */}
           {Object.entries(footerLinks).map(([heading, links]) => (
-            <div key={heading}>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-5">
+            <div key={heading} className="col-span-1">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-4">
                 {heading}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {links.map(({ label, to }) => (
                   <li key={label}>
                     <Link
@@ -299,13 +289,37 @@ function Footer() {
             </div>
           ))}
         </div>
+
+        {/* Newsletter — mobile only full width, desktop inline */}
+        <div className="mt-10 sm:mt-12 rounded-2xl border border-white/10 bg-white/5 p-5 sm:p-7">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <div className="flex-1">
+              <p className="text-sm font-bold text-white">Stay in the loop</p>
+              <p className="text-xs text-gray-400 mt-1">
+                Get deals, launches & tech news straight to your inbox.
+              </p>
+            </div>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <input
+                type="email"
+                placeholder="your@email.com"
+                className="flex-1 sm:w-56 bg-white/10 border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-500 outline-none focus:border-[#015df0] transition"
+              />
+              <button className="shrink-0 px-4 py-2.5 rounded-xl bg-[#015df0] text-white text-sm font-bold hover:bg-blue-600 transition">
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Bottom bar */}
+      {/* ── Bottom bar ── */}
       <div className="border-t border-white/10">
-        <div className="max-w-[1600px] mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-600">
-          <p>© 2026 Nexota Store. All Rights Reserved.</p>
-          <div className="flex gap-5 flex-wrap justify-center">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600">
+          <p className="text-center sm:text-left">
+            © 2026 Nexota Store. All Rights Reserved.
+          </p>
+          <div className="flex gap-4 sm:gap-5 flex-wrap justify-center">
             <Link
               to="/privacy"
               className="hover:text-gray-400 transition-colors"

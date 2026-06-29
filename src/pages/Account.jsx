@@ -1,77 +1,86 @@
 import { Link, Navigate } from "react-router-dom";
 import { User, ShoppingBag, Heart, LogOut, Mail, Package } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import MainLayout from "../layouts/MainLayout";
 import useAuthStore from "../store/useAuthStore";
-import useOrderStore from "../store/useOrderStore";
-import useWishlistStore from "../store/useWishlistStore";
+import api from "../services/api";
 
 function Account() {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
-  const orders = useOrderStore((state) => state.orders || []);
-  const wishlist = useWishlistStore((state) => state.wishlist || []);
+  const [orders, setOrders] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [ordersRes, wishlistRes] = await Promise.all([
+          api.get("/orders"),
+          api.get(`/wishlist/${user._id}`),
+        ]);
+
+        setOrders(ordersRes.data.orders || []);
+        setWishlist(wishlistRes.data.wishlist || []);
+      } catch (error) {
+        console.error("Account Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user?._id) {
+      fetchData();
+    }
+  }, [user]);
 
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
+  if (loading) {
+    return (
+      <MainLayout>
+        <div className="max-w-7xl mx-auto py-20 text-center">Loading...</div>
+      </MainLayout>
+    );
+  }
+
+  const deliveredOrders = orders.filter(
+    (order) => order.orderStatus === "Delivered",
+  );
+
   return (
     <MainLayout>
       <div className="max-w-7xl mx-auto px-4 py-10">
-        {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-4xl font-black text-gray-900">My Account</h1>
+        <h1 className="text-4xl font-black mb-2">My Account</h1>
 
-          <p className="text-gray-500 mt-2">
-            Manage your profile, orders and wishlist
-          </p>
-        </div>
+        <p className="text-gray-500 mb-8">
+          Manage your profile, orders and wishlist
+        </p>
 
         <div className="grid lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm border h-fit">
+          <div className="bg-white p-6 rounded-3xl border">
             <div className="flex items-center gap-4 mb-6">
-              <div
-                className="
-                w-14
-                h-14
-                rounded-full
-                bg-[#015DF0]
-                text-white
-                flex
-                items-center
-                justify-center
-                font-bold
-                text-xl
-                "
-              >
-                {user?.name?.charAt(0)?.toUpperCase() || "U"}
+              <div className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold">
+                {user?.name?.charAt(0)}
               </div>
 
               <div>
                 <h3 className="font-bold">{user?.name}</h3>
-
                 <p className="text-sm text-gray-500">{user?.email}</p>
               </div>
             </div>
 
             <div className="space-y-3">
               <Link
-                to="/account"
-                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50"
-              >
-                <User size={18} />
-                My Account
-              </Link>
-
-              <Link
                 to="/orders"
                 className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50"
               >
                 <Package size={18} />
-                My Orders
+                Orders
               </Link>
 
               <Link
@@ -84,16 +93,7 @@ function Account() {
 
               <button
                 onClick={logout}
-                className="
-                w-full
-                flex
-                items-center
-                gap-3
-                p-3
-                rounded-xl
-                text-red-500
-                hover:bg-red-50
-                "
+                className="w-full flex items-center gap-3 p-3 rounded-xl text-red-500 hover:bg-red-50"
               >
                 <LogOut size={18} />
                 Logout
@@ -101,129 +101,48 @@ function Account() {
             </div>
           </div>
 
-          {/* Content */}
-          <div className="lg:col-span-3 space-y-6">
-            {/* Stats */}
-            <div className="grid md:grid-cols-3 gap-5">
-              <div className="bg-white rounded-3xl p-6 shadow-sm border">
-                <ShoppingBag size={30} className="text-[#015DF0]" />
-
-                <h3 className="mt-4 text-3xl font-black">{orders.length}</h3>
-
-                <p className="text-gray-500">Total Orders</p>
+          <div className="lg:col-span-3">
+            <div className="grid md:grid-cols-3 gap-5 mb-6">
+              <div className="bg-white p-6 rounded-3xl border">
+                <ShoppingBag size={30} />
+                <h2 className="text-3xl font-black mt-3">{orders.length}</h2>
+                <p>Total Orders</p>
               </div>
 
-              <div className="bg-white rounded-3xl p-6 shadow-sm border">
-                <Heart size={30} className="text-red-500" />
-
-                <h3 className="mt-4 text-3xl font-black">{wishlist.length}</h3>
-
-                <p className="text-gray-500">Wishlist Items</p>
+              <div className="bg-white p-6 rounded-3xl border">
+                <Heart size={30} />
+                <h2 className="text-3xl font-black mt-3">{wishlist.length}</h2>
+                <p>Wishlist Items</p>
               </div>
 
-              <div className="bg-white rounded-3xl p-6 shadow-sm border">
-                <Package size={30} className="text-green-600" />
-
-                <h3 className="mt-4 text-3xl font-black">
-                  {
-                    orders.filter((order) => order.status === "Delivered")
-                      .length
-                  }
-                </h3>
-
-                <p className="text-gray-500">Delivered</p>
+              <div className="bg-white p-6 rounded-3xl border">
+                <Package size={30} />
+                <h2 className="text-3xl font-black mt-3">
+                  {deliveredOrders.length}
+                </h2>
+                <p>Delivered</p>
               </div>
             </div>
 
-            {/* Profile */}
-            <div className="bg-white rounded-3xl p-6 shadow-sm border">
-              <h2 className="text-2xl font-bold mb-6">Profile Details</h2>
+            <div className="bg-white rounded-3xl border p-6 mb-6">
+              <h2 className="text-2xl font-bold mb-4">Profile Details</h2>
 
-              <div className="grid md:grid-cols-2 gap-5">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm text-gray-500">Full Name</label>
+                  <label className="text-gray-500">Name</label>
 
-                  <div className="mt-2 p-4 border rounded-2xl">
-                    {user?.name}
-                  </div>
+                  <div className="p-4 border rounded-xl mt-2">{user.name}</div>
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-500">Email Address</label>
+                  <label className="text-gray-500">Email</label>
 
-                  <div className="mt-2 p-4 border rounded-2xl flex items-center gap-2">
+                  <div className="p-4 border rounded-xl mt-2 flex items-center gap-2">
                     <Mail size={16} />
-                    {user?.email}
+                    {user.email}
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Recent Orders */}
-            <div className="bg-white rounded-3xl p-6 shadow-sm border">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Recent Orders</h2>
-
-                <Link to="/orders" className="text-[#015DF0] font-semibold">
-                  View All
-                </Link>
-              </div>
-
-              {orders.length === 0 ? (
-                <div className="text-center py-10">
-                  <Package size={60} className="mx-auto text-gray-300" />
-
-                  <h3 className="mt-4 text-xl font-semibold">No Orders Yet</h3>
-
-                  <p className="text-gray-500 mt-2">
-                    Start shopping to see orders here.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {orders.slice(0, 5).map((order) => (
-                    <div
-                      key={order.id}
-                      className="
-                      border
-                      rounded-2xl
-                      p-4
-                      flex
-                      flex-col
-                      md:flex-row
-                      md:items-center
-                      md:justify-between
-                      gap-3
-                      "
-                    >
-                      <div>
-                        <h4 className="font-bold">Order #{order.id}</h4>
-
-                        <p className="text-sm text-gray-500">{order.date}</p>
-                      </div>
-
-                      <div>
-                        <span
-                          className="
-                          px-3
-                          py-1
-                          rounded-full
-                          bg-blue-100
-                          text-blue-700
-                          text-sm
-                          "
-                        >
-                          {order.status}
-                        </span>
-                      </div>
-
-                      <div className="font-bold">
-                        QAR {Number(order.total).toFixed(2)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         </div>

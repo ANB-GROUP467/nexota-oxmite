@@ -1,17 +1,388 @@
 @import "tailwindcss";
 
-body {
-  margin: 0;
-  padding: 0;
-  background: #f7f7fa;
-  font-family: Inter, sans-serif;
+/* ─── Base: HTML ─────────────────────────────────────────────────────────── */
+
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: 100%;
 }
 
+/* ─── Base: Body ─────────────────────────────────────────────────────────── */
+
+body {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  /* Stable gutter here (not on html) to avoid layout shifts */
+  scrollbar-gutter: stable;
+  /* Allow pull-to-refresh on mobile — only suppress if this is a PWA */
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
+  background: #f7f7fa;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+/* ─── Root ───────────────────────────────────────────────────────────────── */
+
+#root {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ─── Box Model ──────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ─── Media ──────────────────────────────────────────────────────────────── */
+
+img,
+svg,
+video,
+canvas,
+iframe,
+embed,
+object {
+  max-width: 100%;
+  display: block;
+}
+
+img,
+video {
+  height: auto;
+}
+
+/* ─── Logo Sizing ────────────────────────────────────────────────────────── */
+
+img[src="/logo.png"],
+img[src*="/logo.png"] {
+  max-width: 96px;
+  max-height: 64px;
+  object-fit: contain;
+}
+
+header img[src="/logo.png"],
+header img[src*="/logo.png"] {
+  max-width: 76px;
+  max-height: 48px;
+}
+
+footer img[src="/logo.png"],
+footer img[src*="/logo.png"] {
+  max-width: 96px;
+  max-height: 56px;
+}
+
+/* ─── Form Elements ──────────────────────────────────────────────────────── */
+
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+  font: inherit;
+}
+
+/* ─── Text Overflow ──────────────────────────────────────────────────────── */
+
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+strong,
+label,
+small {
+  overflow-wrap: anywhere;
+}
+
+/* ─── Selection ──────────────────────────────────────────────────────────── */
+
+::selection {
+  background: rgba(1, 93, 240, 0.18);
+  color: #0d1b3e;
+}
+
+/* ─── Focus ──────────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 3px solid rgba(1, 93, 240, 0.28);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ─── Tap Highlight ──────────────────────────────────────────────────────── */
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ─── Transitions ────────────────────────────────────────────────────────── */
+
+button,
+a {
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease,
+    opacity 160ms ease;
+}
+
+button:active:not(:disabled),
+a:active {
+  transform: translateY(1px);
+}
+
+input,
+select,
+textarea {
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+/* ─── Cursor ─────────────────────────────────────────────────────────────── */
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ─── Scrollbar — cross-browser ──────────────────────────────────────────── */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+/* WebKit / Blink */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #d1d5db;
   border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+  background-clip: content-box;
+}
+
+/* ─── Layout Utilities ───────────────────────────────────────────────────── */
+
+.responsive-shell {
+  width: min(100%, 1600px);
+  margin-inline: auto;
+  padding-inline: clamp(12px, 3vw, 24px);
+}
+
+/* ─── Card Hover Lift ────────────────────────────────────────────────────── */
+
+.ux-card {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+@media (hover: hover) {
+  .ux-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .hover-lift {
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* ─── Shimmer Skeleton ───────────────────────────────────────────────────── */
+
+.ux-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: #e5e7eb;
+  /* Promote to GPU layer so the gradient animation doesn't cause repaints */
+  will-change: transform;
+}
+
+.ux-shimmer::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  animation: ux-shimmer 1.35s infinite;
+  /* Isolate the animation to its own composite layer */
+  will-change: transform;
+}
+
+@keyframes ux-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ─── Page Transition Shell ──────────────────────────────────────────────── */
+
+.page-transition {
+  min-width: 0;
+  width: 100%;
+}
+
+/* ─── Safe Area Utilities ────────────────────────────────────────────────── */
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* ─── Minimum Tap Target ─────────────────────────────────────────────────── */
+
+.tap-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Responsive: Tablet (641px – 1023px) ────────────────────────────────── */
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  img[src="/logo.png"],
+  img[src*="/logo.png"] {
+    max-width: 88px;
+    max-height: 56px;
+  }
+}
+
+/* ─── Responsive: Mobile (≤ 640px) ──────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  /*
+   * Only add bottom padding when a fixed bottom nav is present.
+   * Scope this to a class on the layout instead of blindly on body,
+   * so pages without a bottom nav aren't affected.
+   */
+  body.has-bottom-nav {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  }
+
+  img[src="/logo.png"],
+  img[src*="/logo.png"] {
+    max-width: 78px;
+    max-height: 52px;
+  }
+
+  footer img[src="/logo.png"],
+  footer img[src*="/logo.png"] {
+    max-width: 84px;
+    max-height: 52px;
+  }
+
+  /*
+   * Fluid heading scale for very large text on small screens.
+   * Covers text-4xl through text-7xl to avoid a gap at 4xl.
+   */
+  .text-4xl,
+  [class*="text-4xl"] {
+    font-size: clamp(1.6rem, 7vw, 2.25rem) !important;
+    line-height: 1.1 !important;
+  }
+
+  .text-5xl,
+  [class*="text-5xl"] {
+    font-size: clamp(1.75rem, 8vw, 2.5rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  .text-6xl,
+  [class*="text-6xl"],
+  .text-7xl,
+  [class*="text-7xl"] {
+    font-size: clamp(2rem, 9vw, 3rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  .mobile-stack {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
