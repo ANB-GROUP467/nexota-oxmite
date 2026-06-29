@@ -1,20 +1,20 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import MegaMenu from "../navigation/MegaMenu";
+import MegaMenu from "./navigation/MegaMenu";
 import {
   fetchBrands,
   fetchNavData,
   fetchSubCategories,
   normalizeBrands,
-} from "../../services/categoryService";
+} from "../services/categoryService";
 import {
   getCategoryPath,
   getSubCategoryPath,
   matchesSubToCategory,
   normalizeCategory,
   normalizeSubCategory,
-} from "../../utils/refs";
+} from "../utils/refs";
 
 function NavbarSkeleton() {
   return (
